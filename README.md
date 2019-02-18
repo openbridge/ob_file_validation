@@ -1,4 +1,4 @@
-# ob_file_validation
+# CSV Lint: File Validation and Schema Generation
 The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Think of it like a easy to use CSV linter.
 
 Why validate CSV files? Imagine pouring a gallon of maple syrup into the gas tank of your car. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
