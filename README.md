@@ -1,15 +1,14 @@
 # CSV Lint: File Validation and Schema Generation
-The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Think of it like a easy to use CSV linter.
+The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Think of it like an easy to use CSV linter.
 
-Why validate CSV files? Imagine pouring a gallon of maple syrup into the gas tank of your car. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
+# Why validate CSV files?
+Comma-separated values (CSV) is commonly used for exchanging data between systems. While this format is common, it can present difficulties. Why? Different tools, or export processes, often generate outputs that are not CSV files or have variations that are not considered "valid" according to the RFC4180.
+
+Invalid CSV files create challenges for those building data pipelines. Pipelines value consistency, predictability, and testability as they ensure uninterrupted operation from source to a target destination.
+
+Imagine pouring a gallon of maple syrup into the gas tank of your car. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
 
 This API will assist users with determining the quality of CSV data prior to delivery to upstream data pipelines. It will also generate a schema for the tested file, which can further aid in validation workflows.
-
-# Background
-Comma separated values (CSV) is commonly used for exchanging data between systems. While this format is common, it can present difficulties. Why? Different tools, or export processes, often generate outputs that are not CSV files or have variations that are not considered "valid" according the [RFC4180](https://tools.ietf.org/html/rfc4180).
-
-Invalid CSV files create challenges for those building data pipelines. Pipelines value consistency, predictability and testability as they ensure uninterrupted operation from source to a target destination.
-
 
 ## What does a valid CSV look like?
 Here is an example of a valid CSV file.
@@ -40,16 +39,16 @@ So what is wrong with this? RFC 4180 says that;
 
 *Within the header and each record, there may be one or more fields, separated by commas. Each line should contain the same number of fields throughout the file. Spaces are considered part of a field and should not be ignored. The last field in the record must not be followed by a comma.*  
 
-Notice the additional `zzz` is now between `aaa` and `bbb`. This file would marked as invalid because this misalignment. Is `zzz` correct? What about `ccc`? Maybe there is a missing header value for `ccc`? Regardless, the file has some issues.
+Notice the additional `zzz` is now between `aaa` and `bbb`. This file would marked as invalid because this of this misalignment. Is `zzz` correct? What about `ccc`? Maybe there is a missing header value for `ccc`? Regardless, the file has some issues.
 
 For other examples, please [take a look at the RFC document](https://tools.ietf.org/html/rfc4180) for guidance on proper formats used for files using Comma-Separated Values (CSV).
 
-# API Usage
+# Getting Started: API Usage
 There are two steps to the validation process. The first step is to post the file(s) to the API. If the file was accepted, the API will return a polling endpoint that contains the results of the validation process.
 
-In the example we will assume you have CSV file called `your.csv` that you want to test.
+In our example, we will assume you have a CSV file called `your.csv` that you want to test.
 
-## Prerequisites
+### Prerequisites
 The API has a 10 MB limit per file posted. See our client code samples how on how to manage for this limit (hint: split large files). Also, a **header row is required** in your CSV for validation to work correctly.
 
 ## Step 1: Post `your.csv` to validation API
@@ -87,6 +86,8 @@ If the file was properly formatted, with no errors, you will get a `HTTP/2 200` 
 ```json
 {"data": {"rules": {"configuration": {"load": {"prepend_headers": false, "schema": {"fields": [{"default": null, "include_in_checksum": true, "name": "ob_mws_seller_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "ob_mws_marketplace_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_name", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_description", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "listing_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "seller_sku", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "price", "type": "DOUBLE PRECISION"}, {"default": null, "include_in_checksum": true, "name": "quantity", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "open_date", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "image_url", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_is_marketplace", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "product_id_type", "type": "BIGINT"}, {"default": null, "include_in_checksum": true, "name": "zshop_shipping_fee", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_note", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_condition", "type": "BIGINT"}, {"default": null, "include_in_checksum": true, "name": "zshop_category1", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "zshop_browse_path", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "zshop_storefront_feature", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "asin1", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "asin2", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "asin3", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "will_ship_internationally", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "expedited_shipping", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "zshop_boldface", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "product_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "bid_for_featured_placement", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "add_delete", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "pending_quantity", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "fulfillment_channel", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "merchant_shipping_group", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": false, "name": "ob_transaction_id", "type": "varchar(256)"}, {"default": null, "include_in_checksum": false, "name": "ob_file_name", "type": "varchar(2048)"}, {"default": null, "include_in_checksum": false, "name": "ob_processed_at", "type": "varchar(256)"}, {"default": "getdate()", "include_in_checksum": false, "name": "ob_modified_date", "type": "datetime"}]}}}, "destination": {"tablename": "sample"}, "dialect": {"__doc__": null, "__module__": "csv", "_name": "sniffed", "delimiter": ",", "doublequote": true, "encoding": "UTF-8", "lineterminator": "\r\n", "quotechar": "\"", "quoting": 0, "skipinitialspace": false}, "meta": {"creation_date": null, "version": null}}}}
 ```
+**Congratulations**, the file passed validation and generated a schema for you!
+
 ## Client Code: `Bash` and `Python`
 We have provided a couple of client scripts for you to use as-is or modify as need.
 
