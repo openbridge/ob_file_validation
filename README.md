@@ -1,5 +1,7 @@
 # ob_file_validation
-The purpose of this API is to validate CSV files for general compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Imagine pouring a gallon of maple syrup into your cars gat tank. That is what bad CSV files do to data pipelines. This is why we have an API that will assist with determining the quality of CSV data sent to it.
+The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Why validate CSV files? Imagine pouring a gallon of maple syrup into your cars gat tank. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
+
+This API that will assist users with determining the quality of CSV data prior to delivery to an upstream data pipeline. It will also generate a schema for the tested file, which can also aid in validation workflows.
 
 # Background
 Comma separated values (CSV) is commonly used for exchanging data between systems. While this format is common, it can present difficulties. Why? Different tools, or export processes, often generate outputs that are not CSV files or have variations that are not considered "valid" according the [RFC4180](https://tools.ietf.org/html/rfc4180).
@@ -41,6 +43,9 @@ There are two steps to the validation process. The first step is to post the fil
 
 In the example we will assume you have CSV file called `your.csv` that you want to test.
 
+## Prerequisites
+The API has a 10 MB limit per file posted. See our client code samples how on how to manage for this limit (hint: split large files). Also, a **header row is required** in your CSV for validation to work correctly.
+
 ## Step 1: Post `your.csv` to validation API
 We will run a simple `curl` command that will send the data to the API. It will look like this:
 ```bash
@@ -77,6 +82,18 @@ If the file was properly formatted, with no errors, you will get a `HTTP/2 200` 
 {"data": {"rules": {"configuration": {"load": {"prepend_headers": false, "schema": {"fields": [{"default": null, "include_in_checksum": true, "name": "ob_mws_seller_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "ob_mws_marketplace_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_name", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_description", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "listing_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "seller_sku", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "price", "type": "DOUBLE PRECISION"}, {"default": null, "include_in_checksum": true, "name": "quantity", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "open_date", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "image_url", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_is_marketplace", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "product_id_type", "type": "BIGINT"}, {"default": null, "include_in_checksum": true, "name": "zshop_shipping_fee", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_note", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "item_condition", "type": "BIGINT"}, {"default": null, "include_in_checksum": true, "name": "zshop_category1", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "zshop_browse_path", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "zshop_storefront_feature", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "asin1", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "asin2", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "asin3", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "will_ship_internationally", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "expedited_shipping", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "zshop_boldface", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "product_id", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "bid_for_featured_placement", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "add_delete", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "pending_quantity", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "fulfillment_channel", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": true, "name": "merchant_shipping_group", "type": "VARCHAR (1024)"}, {"default": null, "include_in_checksum": false, "name": "ob_transaction_id", "type": "varchar(256)"}, {"default": null, "include_in_checksum": false, "name": "ob_file_name", "type": "varchar(2048)"}, {"default": null, "include_in_checksum": false, "name": "ob_processed_at", "type": "varchar(256)"}, {"default": "getdate()", "include_in_checksum": false, "name": "ob_modified_date", "type": "datetime"}]}}}, "destination": {"tablename": "sample"}, "dialect": {"__doc__": null, "__module__": "csv", "_name": "sniffed", "delimiter": ",", "doublequote": true, "encoding": "UTF-8", "lineterminator": "\r\n", "quotechar": "\"", "quoting": 0, "skipinitialspace": false}, "meta": {"creation_date": null, "version": null}}}}
 ```
 ## Client Code: `Bash` and `Python`
+We have provided a couple of client scripts for you to use as-is or modify as need.
+
+The first is a `BASH` client. It will take a CSV as an argument, then split the file into chunks for processing. Each chunk is sent to the API for testing. This makes the process more atomic, rather than one large file it can test smaller chunks. If there is an error, it will fail on a chunk, allowing you to more easily isolate a problem.
+
+```bash
+bash -c './validation_client.sh path/to/your.csv'
+```
+The `PYTHON` client works the same way, pass it file via `-f` and it will split and send chunks, just like the `BASH` client.
+
+```bash
+python ./validation_client.py -f path/to/your.csv
+```
 
 
 # Trouble Shooting
@@ -170,7 +187,7 @@ Openbridge Inc., 101,   ,
 ```
 
 |  comp_name (string) | comp_no (integer)  |  sales_amt (decimal) |
-|---|---|---|---|---|
+|---|---|---|
 | Acme Corp.  |  100 |  500.00 |  
 | Openbridge Inc.  | 101 |‘   ‘ |
 
