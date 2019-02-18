@@ -77,7 +77,7 @@ Note the `location` URL endpoint:
 https://validation.openbridge.io/dryrun/poll_async/99ax58f2020423v28c6e644cd143cdac
 ```
 
-This is the your polling endpoint. You use this to obtain the results from of the validation process.  You can use `curl` again:
+This is the your polling endpoint. You use this to obtain the results from the validation process. You can use `curl` again:
 ```bash
 curl -s -w "%{http_code}" "https://validation.openbridge.io/dryrun/poll_async/99ax58f2020423v28c6e644cd143cdac"
 ```
