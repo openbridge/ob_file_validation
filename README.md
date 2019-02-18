@@ -102,7 +102,7 @@ python ./validation_client.py -f path/to/your.csv
 ```
 
 
-# Trouble Shooting
+# Troubleshooting Problem Files: Common Use Cases
 
 ## Use Case 1: Unquoted commas
 If your file is comma delimited, confirm that there are no extra unquoted commas in your data. Unquoted commas in your data will be treated as a field delimiter and the result will be that your data is ‘shifted’ and an extra column(s) created.
