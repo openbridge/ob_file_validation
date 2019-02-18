@@ -1,7 +1,9 @@
 # ob_file_validation
-The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Why validate CSV files? Imagine pouring a gallon of maple syrup into your cars gat tank. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
+The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Think of it like a easy to use CSV linter.
 
-This API that will assist users with determining the quality of CSV data prior to delivery to an upstream data pipeline. It will also generate a schema for the tested file, which can also aid in validation workflows.
+Why validate CSV files? Imagine pouring a gallon of maple syrup into the gas tank of your car. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
+
+This API will assist users with determining the quality of CSV data prior to delivery to upstream data pipelines. It will also generate a schema for the tested file, which can further aid in validation workflows.
 
 # Background
 Comma separated values (CSV) is commonly used for exchanging data between systems. While this format is common, it can present difficulties. Why? Different tools, or export processes, often generate outputs that are not CSV files or have variations that are not considered "valid" according the [RFC4180](https://tools.ietf.org/html/rfc4180).
@@ -100,12 +102,12 @@ python ./validation_client.py -f path/to/your.csv
 ```
 
 
-# Trouble Shooting
+# Troubleshooting Problem Files: Common Use Cases
 
 ## Use Case 1: Unquoted commas
 If your file is comma delimited, confirm that there are no extra unquoted commas in your data. Unquoted commas in your data will be treated as a field delimiter and the result will be that your data is ‘shifted’ and an extra column(s) created.
 
-In the example below, there is an unquoted comma (Openbridge, Inc.) in the second row of the file named `company_sales_20190207.csv` that is being loaded to a warehouse table named company_sales that has been defined with 3 fields: `comp_name (string)``, `comp_no (integer)` and `sales_amt (decimal)`
+In the example below, there is an unquoted comma (Openbridge, Inc.) in the second row of the file named `company_sales_20190207.csv` that is being loaded to a warehouse table named company_sales that has been defined with 3 fields: `comp_name (string)`, `comp_no (integer)` and `sales_amt (decimal)`
 
 File: `company_sales_20190207.csv`
 
@@ -213,7 +215,21 @@ There are a couple options to resolve this issue depending on whether the null v
 
 ## Results Polling Endpoint
 
-* Status Code: `HTTP/2 302; Success - still processing`
+* Status Code: `HTTP/2 302; Pending - still processing`
 * Status Code: `HTTP/2 200; Success - processing completed, file validated successfully`
 * Status Code: `HTTP/2 502; Failure - file determined to be invalid by rules API`
 * Status Code: `HTTP/2 404; Failure - invalid request ID in polling URL (expired, etc.)`
+
+
+# TODO
+
+
+# Issues
+
+If you have any problems with or questions about this image, please contact us through a GitHub issue.
+
+# Contributing
+
+You are invited to contribute new features, fixes, or updates, large or small; we are always thrilled to receive pull requests, and do our best to process them as fast as we can.
+
+Before you start to code, we recommend discussing your plans through a GitHub issue, especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.
