@@ -39,7 +39,7 @@ So what is wrong with this? RFC 4180 says that;
 
 *Within the header and each record, there may be one or more fields, separated by commas. Each line should contain the same number of fields throughout the file. Spaces are considered part of a field and should not be ignored. The last field in the record must not be followed by a comma.*  
 
-Notice the additional `zzz` is now between `aaa` and `bbb`. This file would marked as invalid because this misalignment. Is `zzz` correct? What about `ccc`? Maybe there is a missing header value for `ccc`? Regardless, the file has some issues.
+Notice the additional `zzz` is now between `aaa` and `bbb`. This file would marked as invalid because this of this misalignment. Is `zzz` correct? What about `ccc`? Maybe there is a missing header value for `ccc`? Regardless, the file has some issues.
 
 For other examples, please [take a look at the RFC document](https://tools.ietf.org/html/rfc4180) for guidance on proper formats used for files using Comma-Separated Values (CSV).
 
