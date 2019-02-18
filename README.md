@@ -1,7 +1,9 @@
 # ob_file_validation
-The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Why validate CSV files? Imagine pouring a gallon of maple syrup into your cars gat tank. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
+The purpose of this API is to validate CSV files for compliance with established norms such as [RFC4180](https://tools.ietf.org/html/rfc4180). Think of it like a easy to use CSV linter.
 
-This API that will assist users with determining the quality of CSV data prior to delivery to an upstream data pipeline. It will also generate a schema for the tested file, which can also aid in validation workflows.
+Why validate CSV files? Imagine pouring a gallon of maple syrup into the gas tank of your car. That is what bad CSV files do to data pipelines. If an error can get trapped earlier in the process, it improves operations for all systems.
+
+This API will assist users with determining the quality of CSV data prior to delivery to upstream data pipelines. It will also generate a schema for the tested file, which can further aid in validation workflows.
 
 # Background
 Comma separated values (CSV) is commonly used for exchanging data between systems. While this format is common, it can present difficulties. Why? Different tools, or export processes, often generate outputs that are not CSV files or have variations that are not considered "valid" according the [RFC4180](https://tools.ietf.org/html/rfc4180).
@@ -213,7 +215,7 @@ There are a couple options to resolve this issue depending on whether the null v
 
 ## Results Polling Endpoint
 
-* Status Code: `HTTP/2 302; Success - still processing`
+* Status Code: `HTTP/2 302; Pending - still processing`
 * Status Code: `HTTP/2 200; Success - processing completed, file validated successfully`
 * Status Code: `HTTP/2 502; Failure - file determined to be invalid by rules API`
 * Status Code: `HTTP/2 404; Failure - invalid request ID in polling URL (expired, etc.)`
