@@ -15,7 +15,7 @@ Here is an example of a valid CSV file.
 It has a header row with `foo`, `bar`, and `buzz` with a corresponding row of `aaa`, `bbb`, and `ccc`
 
 |  foo | bar  |  buzz |
-|---|---|---|---|---|
+|---|---|---|
 | aaa  |  bbb |  ccc |  
 
 The CSV will look something like this;
