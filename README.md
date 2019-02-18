@@ -112,7 +112,7 @@ Openbridge,Inc., 101, 100.00
 ```
 
 |  comp_name | comp_no  |  sales_amt |
-|---|---|---|---|---|
+|---|---|---|
 | Acme Corp.  |  100 |  500.00 |  
 | Openbridge,Inc.  | 101 |  100.00|
 
@@ -149,7 +149,7 @@ Openbridge,Inc.,“101,100.00
 ```
 
 |  comp_name (string) | comp_no (integer)  |  sales_amt (decimal) |
-|---|---|---|---|---|
+|---|---|---|
 | Acme Corp.  |  100 |  500.00 |  
 | Openbridge,Inc.  | 101,100.00| |
 
