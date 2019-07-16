@@ -222,12 +222,12 @@ Notice the `sales_amt` is an INT:
 comp_name,comp_no,sales_amt
 Acme Corp.,100,500
 Openbridge Inc.,101,300
-
+```
 |  comp_name (string) | comp_no (integer)  |  sales_amt (integer) |
 |---|---|---|
 | Acme Corp.  | 100 |  500 |  
 | Openbridge Inc.  | 101 | 300 |
-```
+
 
 Now, lets say you have historical data from a few years ago you also want to load into the same destination. However, the `sales_amt` was not an INT back then, it was a decimal:
 
@@ -238,13 +238,13 @@ comp_name,comp_no,sales_amt
 Acme Corp.,100,500.00
 Openbridge Inc.,101,300.00
 Wiley,103,1200.00
-
+```
 |  comp_name (string) | comp_no (integer)  |  sales_amt (decimal) |
 |---|---|---|
 | Acme Corp.  |  100 |  500.00 |  
 | Openbridge Inc.  | 101 | 300.00 |
 | Wiley | 103 | 1200.00 |
-```
+
 When you attempt to load `company_product_history.csv` it will fail as a result of this data type mismatch. That `sales_amt` will fail because the string field type associated with the spaces does not match the decimal field type for the table `company_product` definition.
 
 
