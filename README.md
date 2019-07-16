@@ -204,6 +204,55 @@ There are a couple options to resolve this issue depending on whether the null v
 1. If the value is valid, remove the spaces in the field value to indicate a true Null value. A field with spaces is not Null.
 2. Replace the value with a valid field value that matches the field data type in the table (in our example a decimal)
 
+## Use Case 4: Mismatch data types
+
+It is possible that your data types will change over time. This means your old and new schemas do not have compatible field types defined in your destination table.
+
+
+### Example
+Lets say you attempt to process a file where all values for a column called `sales_amt` were an INT data type, yet historical data for `sales_amt` were a decimal data type. This will cause donwstream processing failures. A system will have a schema setting `sales_amt` as an INT and you are trying to process and load older data with a decimal data type. 
+
+In the example below, there is a value that includes the field `sales_amt` of a file named `company_product_today.csv` that is being loaded to a warehouse table named `company_sales`. Here is an example of a file that is current that is sent every day: 
+* File: `company_product_today.csv`
+* Table: `company_product`
+
+Notice the `sales_amt` is an INT:
+
+```bash
+comp_name,comp_no,sales_amt
+Acme Corp.,100,500
+Openbridge Inc.,101,300
+
+|  comp_name (string) | comp_no (integer)  |  sales_amt (integer) |
+|---|---|---|
+| Acme Corp.  | 100 |  500 |  
+| Openbridge Inc.  | 101 | 300 |
+```
+
+Now, lets say you have historical data from a few years ago you also want to load into the same destination. However, the `sales_amt` was not an INT back then, it was a decimal:
+
+File: `company_product_history.csv`
+Table: `company_product`
+```bash
+comp_name,comp_no,sales_amt
+Acme Corp.,100,500.00
+Openbridge Inc.,101,300.00
+Wiley,103,1200.00
+
+|  comp_name (string) | comp_no (integer)  |  sales_amt (decimal) |
+|---|---|---|
+| Acme Corp.  |  100 |  500.00 |  
+| Openbridge Inc.  | 101 | 300.00 |
+| Wiley | 103 | 1200.00 |
+```
+When you attempt to load `company_product_history.csv` it will fail as a result of this data type mismatch. That `sales_amt` will fail because the string field type associated with the spaces does not match the decimal field type for the table `company_product` definition.
+
+
+### Resolution:
+There are a couple options to resolve this issue:
+
+1. Rather than send historical data to the same table, send it to an alternate table and then use a view to fuse them together. 
+2. Use the API to check all of your current and hisotrical data. This will allows you to model the data so you can determine a common data type that would work across all variations. 
 
 
 # Status Codes
